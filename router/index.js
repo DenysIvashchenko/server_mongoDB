@@ -18,11 +18,18 @@ router.get('/api', (req, res) => {
     return res.json('message')
 })
 
-router.post('/user', (req, res) => {
-    console.log(req.body)
-    const user = new User({ username: req.body.username, password: req.body.password })
-    user.save();
-    return res.json(user)
+router.post('/user', async (req, res) => {
+    console.log(req.body);
+    try { 
+        const user = new User({ username: req.body.username, password: req.body.password })
+        await user.save();
+        return res.json(user);   
+    }
+    catch (error) {
+        console.log(error)
+        res.status(400).json({ message: 'something is going wrong' });
+    }
+    
 })
 
 module.exports = router;
