@@ -19,9 +19,9 @@ router.get('/api', (req, res) => {
 })
 
 router.post('/user', async (req, res) => {
-    console.log(req.body);
+    const { username, password } = req.body;
     try { 
-        const user = new User({ username: req.body.username, password: req.body.password })
+        const user = new User({ username, password })
         await user.save();
         return res.json(user);   
     }
