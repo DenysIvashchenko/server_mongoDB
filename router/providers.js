@@ -3,6 +3,7 @@ const router = express.Router();
 const url = require('url');
 const Provider = require('../models/Providers');
 const { body, validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
 
 router.get('/all', async (req, res) => {
     try {
@@ -32,7 +33,8 @@ router.post('/create',
         return res.json({ error });
     }
     try { 
-        const provider = new Provider({ username, password, email })
+        const hashPassword = bcrypt.hashSync(password, 6);
+        const provider = new Provider({ username, password: hashPassword, email })
         await provider.save();
         return res.json(provider);   
     }
