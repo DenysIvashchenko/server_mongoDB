@@ -8,8 +8,12 @@ const app = express();
 
 app.use(express.json());
 
-app.use('/', require('./router/users'));
-app.use('/', require('./router/providers'));
+app.get('/api', (req, res) => {
+    return res.json({ message: "api" })
+})
+
+app.use('/user', require('./router/users'));
+app.use('/provider', require('./router/providers'));
 
 const start = async() => {
     try {

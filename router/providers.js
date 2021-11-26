@@ -4,7 +4,17 @@ const url = require('url');
 const Provider = require('../models/Providers');
 const { body, validationResult } = require('express-validator');
 
-router.post('/provider',
+router.get('/all', async (req, res) => {
+    try {
+        const providers = await Provider.find();
+        return res.json(providers)
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({error})
+    }
+});
+
+router.post('/create',
     body('email').isEmail().withMessage("invalid email"),
     body('password').isLength({ min: 5 }).withMessage("password to short"),
 
@@ -31,6 +41,6 @@ router.post('/provider',
         res.status(400).json({ message: 'something is going wrong' });
     }
     
-})
+});
 
 module.exports = router;

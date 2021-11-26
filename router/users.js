@@ -4,21 +4,26 @@ const router = express.Router();
 const url = require('url');
 
 router.get('/one', async (req, res) => {
-    const find = url.parse(req.url, true).query
-    const user = await User.findOne({ username: find.username });
-    return res.json(user); 
+    const find = url.parse(req.url, true).query;
+    try {
+        const user = await User.findOne({ username: find.username });
+        return res.json(user); 
+    } catch (error) {
+        return res.status(400).json({ error })
+    }
+    
 });
 
 router.get('/all', async (req, res)=> {
-    const find = await User.find();
-    return res.json(find);
+    try {
+        const find = await User.find();
+        return res.json(find);
+    } catch (error) {
+        return res.status(400).json({ error });
+    }
 });
 
-router.get('/api', (req, res) => {
-    return res.json('message')
-})
-
-router.post('/user', async (req, res) => {
+router.post('/create', async (req, res) => {
     const { username, password } = req.body;
     try { 
         const user = new User({ username, password })
