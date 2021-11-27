@@ -76,5 +76,9 @@ router.post('/signup',
     
 });
 
+router.post('/login', (req, res) => {
+    res.json({ start: "start" })
+})
+
 
 module.exports = router;
