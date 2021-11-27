@@ -2,13 +2,18 @@ const express = require('express');
 const mongoose = require('mongoose');
 const User = require('./models/User');
 
-require('dotenv').config()
+require('dotenv').config();
 
 const app = express();
 
 app.use(express.json());
 
-app.use('/', require('./router'));
+app.get('/api', (req, res) => {
+    return res.json({ message: "api" })
+})
+
+app.use('/user', require('./router/users'));
+app.use('/provider', require('./router/providers'));
 
 const start = async() => {
     try {
@@ -18,7 +23,7 @@ const start = async() => {
         app.listen('3500', () => console.log('server work ')); 
     }
     catch (error) {
-        console.log(error)
+        console.log(error);
     }
 }
 
