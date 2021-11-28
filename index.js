@@ -1,12 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const User = require('./models/User');
+const bodyParser = require('body-parser');
 
 require('dotenv').config();
 
 const app = express();
 
 app.use(express.json());
+app.use(bodyParser.json());
 
 app.get('/api', (req, res) => {
     return res.json({ message: "api" })
@@ -18,7 +20,7 @@ app.use('/provider', require('./router/providers'));
 const start = async() => {
     try {
         await mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true })
-        .then(()=> console.log('connected to DB'));
+        .then(() => console.log('connected to DB'));
           
         app.listen('3500', () => console.log('server work ')); 
     }
