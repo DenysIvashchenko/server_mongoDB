@@ -3,7 +3,7 @@ const JWT = require('jsonwebtoken');
 module.exports = async (req, res, next) => {
 
     if (req.method === "OPTIONS") {
-        next()
+        next();
     }
 
     try {
