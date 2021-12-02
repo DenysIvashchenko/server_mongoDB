@@ -1,17 +1,20 @@
-const jwt = require('jsonwebtoken');
+const JWT = require('jsonwebtoken');
 
 module.exports = async (req, res, next) => {
-    let token = req.header('authorization');
 
-    if(!token) res.status(401).json({ msg: 'authorization error' });
-
-    token = token?.split(' ')[1];
+    if (req.method === "OPTIONS") {
+        next();
+    }
 
     try {
-        const decode = await jwt.verify(token, process.env.SECRET_KEY);
-        req.user = decode.email;
+        const token = req.headers.authorization.split(' ')[1];
+        if (!token) {
+            return res.status(403).json({message: 'authorization error'});
+        }
+        const decode = JWT.verify(token, process.env.SECRET_KEY);
+        req.user = decode;
         next();
     } catch (error) {
-        return res.status(404).json({ error });
+        return res.status(403).json({ error });
     }
-}
+};
